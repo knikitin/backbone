@@ -5,6 +5,7 @@
  * @copyright Copyright (c) 2012-2014 Ideal CMS (http://idealcms.ru)
  * @license   http://idealcms.ru/license.html LGPL v3
  */
+usleep(2000000);
 $rand = rand(1, 10);
 $list = array();
 while ($rand--) {
