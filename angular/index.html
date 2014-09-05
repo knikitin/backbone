@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html data-ng-app>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+    <script type="text/javascript" src="/angular/angular.js"></script>
+    <script type="text/javascript" src="/angular/main.js"></script>
+    <meta charset="UTF-8">
+    <title>Angular</title>
+</head>
+<body data-ng-controller="PhoneListCtrl">
+<ul>
+    <li ng-repeat="phone in phones">
+        {{phone.name}}
+        <p>{{phone.snippet}}</p>
+    </li>
+</ul>
+
+</body>
+</html>
