@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="build/react.js"></script>
+    <script src="build/JSXTransformer.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+</head>
+<body>
+
+<div id="content"></div>
+
+<script type="text/jsx">
+
+    var MenuButton = React.createClass({
+        handleClick: function(event) {
+            this.props.onClickButton();
+        },
+        render: function() {
+            return (
+                <button onClick={this.handleClick}>
+                    Загрузить меню
+                </button>
+            );
+        }
+    });
+
+
+    var MenuBox = React.createClass({
+        loadCommentsFromServer: function() {
+            $.ajax({
+                url: this.props.url,
+                dataType: 'json',
+                success: function(data) {
+                    this.setState({data: data});
+                }.bind(this),
+                error: function(xhr, status, err) {
+                    console.error(this.props.url, status, err.toString());
+                }.bind(this)
+            });
+        },
+        handleButtonClick: function(comment) {
+            this.loadCommentsFromServer();
+        },
+        getInitialState: function() {
+            return {data: []};
+        },
+        componentDidMount: function() {
+            this.loadCommentsFromServer();
+        },
+        render: function() {
+            return (
+                <div className="MenuBox">
+                    <MenuButton onClickButton={this.handleButtonClick} />
+                    <h1>Меню</h1>
+                    {this.state.data.map(function(result) {
+                        return <li>{result}</li>;
+                    })}
+                </div>
+            );
+        }
+    });
+
+    /*
+    Сейчас кнопка и меню объединены в одном компоненте.
+    Чтобы их разъединить нужно использовать события.
+    Ключевые слова Flux и Action
+     */
+    React.render(
+        <MenuBox url="/core.php" />,
+        document.getElementById('content')
+    );
+
+
+</script>
+</body>
+</html>
