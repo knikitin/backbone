@@ -1,26 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Тестирование JS-фреймворков</title>
+
+    <!-- Bootstrap -->
+    <link href="/_assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/_assets/bootstrap/js/bootstrap.min.js"></script>
+
     <script src="build/react.js"></script>
     <script src="build/JSXTransformer.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 </head>
 <body>
 
-<div id="content"></div>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">React</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="main-menu">
+            <ul class="nav navbar-nav" id="main-menu">
+                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Link</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="well" id="content">
+
+        </div>
+
+        <h2>Ссылки</h2>
+        <ul>
+            <li><a href="http://habrahabr.ru/post/249107/">ReactJS для глупых людей</a></li>
+            <li><a href="http://habrahabr.ru/post/229629/">5 практических примеров для изучения фреймворка React</a></li>
+            <li><a href="http://facebook.github.io/react/docs/tutorial.html">Official Tutorial</a></li>
+            <li><a href="https://github.com/reactjs/react-tutorial/blob/master/public/scripts/example.js">Source code for official Tutorial</a></li>
+            <li><a href="http://facebook.github.io/react/tips/communicate-between-components.html">Communicate Between Components</a></li>
+            <li><a href="https://gist.github.com/Yitsushi/e3b7823f7d4bf34faa4f">EventSystem that I use with React.js to communicate between components</a></li>
+            <li><a href="http://facebook.github.io/react/tips/initial-ajax.html">Load Initial Data via AJAX</a></li>
+            <li><a href="http://habrahabr.ru/post/222573/">ReactJS in a nutshell. Часть 1</a></li>
+        </ul>
+
+        <div class="text-center">
+            <a class="btn btn-info btn-lg" href="/">К началу</a>
+        </div>
+
+    </div>
+</div>
 
 <script type="text/jsx">
 
+    var EventSystem = (function() {
+        var self = this;
+
+        self.queue = {};
+
+        return {
+            publish: function (event, data) {
+                var queue = self.queue[event];
+
+                if (typeof queue === 'undefined') {
+                    return false;
+                }
+
+                jQuery.each( queue, function( key, method ) {
+                    (method)(data);
+                });
+
+                return true;
+            },
+            subscribe: function(event, callback) {
+                if (typeof self.queue[event] === 'undefined') {
+                    self.queue[event] = [];
+                }
+
+                self.queue[event].push(callback);
+            }
+        };
+    }());
+
+
     var MenuButton = React.createClass({
         handleClick: function(event) {
-            this.props.onClickButton();
+            EventSystem.publish('risk.count.update', this.props.data.url);
         },
         render: function() {
+            var href = '#!' + this.props.data.url;
             return (
-                <button onClick={this.handleClick}>
-                    Загрузить меню
-                </button>
-            );
+                <li>
+                    <a href={href} onClick={this.handleClick}>
+                        {this.props.data.name}
+                    </a>
+                </li>
+            )
         }
     });
 
@@ -38,9 +135,6 @@
                 }.bind(this)
             });
         },
-        handleButtonClick: function(comment) {
-            this.loadCommentsFromServer();
-        },
         getInitialState: function() {
             return {data: []};
         },
@@ -48,14 +142,15 @@
             this.loadCommentsFromServer();
         },
         render: function() {
+            var menu = this.state.data.map(function(result, index) {
+                return (
+                    <MenuButton data={result} key={index} />
+                );
+            });
             return (
-                <div className="MenuBox">
-                    <MenuButton onClickButton={this.handleButtonClick} />
-                    <h1>Меню</h1>
-                    {this.state.data.map(function(result) {
-                        return <li>{result}</li>;
-                    })}
-                </div>
+                <ul className="nav navbar-nav MenuBox">
+                {menu}
+                </ul>
             );
         }
     });
@@ -67,10 +162,48 @@
      */
     React.render(
         <MenuBox url="/core.php" />,
+        document.getElementById('main-menu')
+    );
+
+
+    var ContentBlock = React.createClass({
+        updateRiskCount: function(page) {
+            this.setState({data: {content:'<div class="text-center"><img src="/loader.gif" /></div>'}});
+            $.ajax({
+                url: this.props.url + '&url=' + page,
+                dataType: 'json',
+                success: function(data) {
+                    this.setState({data: data});
+                }.bind(this),
+                error: function(xhr, status, err) {
+                    console.error(this.props.url, status, err.toString());
+                }.bind(this)
+            });
+        },
+        componentDidMount: function() {
+            EventSystem.subscribe('risk.count.update', this.updateRiskCount);
+        },
+        getInitialState: function() {
+            return {data: []};
+        },
+        render: function() {
+            var content = this.state.data.content;
+            return (
+                <div className="ContentBlock">
+                    <span dangerouslySetInnerHTML={{__html: content}} />
+                </div>
+            );
+        }
+    });
+
+
+    React.render(
+        <ContentBlock url="/core.php?mode=content" />,
         document.getElementById('content')
     );
 
 
 </script>
+
 </body>
 </html>
