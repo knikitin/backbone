@@ -108,13 +108,21 @@
 
 
     var MenuButton = React.createClass({
-        handleClick: function(event) {
+        handleClick: function(e) {
+            this.props.onButtonClick({data: this.props.data});
             EventSystem.publish('risk.count.update', this.props.data.url);
+        },
+        getInitialState: function() {
+            var active = '';
+            if (typeof this.props.data.active != 'undefined') {
+                active = this.props.data.active;
+            }
+            return {active: active}
         },
         render: function() {
             var href = '#!' + this.props.data.url;
             return (
-                <li>
+                <li className={this.props.data.active}>
                     <a href={href} onClick={this.handleClick}>
                         {this.props.data.name}
                     </a>
@@ -143,10 +151,19 @@
         componentDidMount: function() {
             this.loadCommentsFromServer();
         },
+        handleButtonClick: function(element) {
+            var data = this.state.data;
+            // Сбрасываем статус активности со всех пунктов, кроме того, на котором щёлкнули
+            data.forEach(function(item, i){
+                item.active = (element.data.url == item.url) ? 'active' : '';
+            });
+            this.setState({data: data});
+        },
         render: function() {
+            var obj = this;
             var menu = this.state.data.map(function(result, index) {
                 return (
-                    <MenuButton data={result} key={index} />
+                    <MenuButton onButtonClick={obj.handleButtonClick} data={result} key={index} />
                 );
             });
             return (
