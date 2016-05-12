@@ -7,7 +7,7 @@
     <title>Тестирование JS-фреймворков</title>
 
     <!-- Bootstrap -->
-    <link href="/_assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../_assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -17,7 +17,7 @@
     <![endif]-->
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/_assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../_assets/bootstrap/js/bootstrap.min.js"></script>
 
     <script src="build/react.js"></script>
     <script src="build/JSXTransformer.js"></script>
@@ -120,14 +120,24 @@
             return {active: active}
         },
         render: function() {
-            var href = '#!' + this.props.data.url;
-            return (
-                <li className={this.props.data.active}>
-                    <a href={href} onClick={this.handleClick}>
-                        {this.props.data.name}
-                    </a>
-                </li>
-            )
+            if (this.props.data.url == '/') {
+                return (
+                    <li className={this.props.data.active}>
+                        <a href='/'>
+                            {this.props.data.name}
+                        </a>
+                    </li>
+                )
+            } else {
+                var href = '#!' + this.props.data.url;
+                return (
+                    <li className={this.props.data.active}>
+                        <a href={href} onClick={this.handleClick}>
+                            {this.props.data.name}
+                        </a>
+                    </li>
+                )
+            }
         }
     });
 
@@ -180,16 +190,16 @@
     Ключевые слова Flux и Action
      */
     React.render(
-        <MenuBox url="/core.php" />,
+        <MenuBox url="../menu.json" />,
         document.getElementById('main-menu')
     );
 
 
     var ContentBlock = React.createClass({
         updateRiskCount: function(page) {
-            this.setState({data: {content:'<div class="text-center"><img src="/loader.gif" /></div>'}});
+            this.setState({data: {content:'<div class="text-center"><img src="../loader.gif" /></div>'}});
             $.ajax({
-                url: this.props.url + '&url=' + page,
+                url: this.props.url + page + '.json',
                 dataType: 'json',
                 success: function(data) {
                     this.setState({data: data});
@@ -207,8 +217,10 @@
         },
         render: function() {
             var content = this.state.data.content;
+            var header = this.state.data.header;
             return (
                 <div className="ContentBlock">
+                    <h1>{{ header }}</h1>
                     <span dangerouslySetInnerHTML={{__html: content}} />
                 </div>
             );
@@ -217,7 +229,7 @@
 
 
     React.render(
-        <ContentBlock url="/core.php?mode=content" />,
+        <ContentBlock url="../" />,
         document.getElementById('content')
     );
 

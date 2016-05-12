@@ -23,11 +23,15 @@
     <div class="col-sm-7">
       <h2>Задача</h2>
       <p>
-        При открытии страницы делается запрос <code>/core.php?mode=menu</code> на получение меню:
+        При открытии страницы делается запрос <code>/menu.json</code> на получение меню:
       </p>
       <p>В ответ возвращается json-массив, содержащий поля url и name</p>
       <pre>
 [
+    {
+        "name": "Главная",
+        "url": "/"
+    },
     {
         "name": "Астрономия",
         "url": "astronomy"
@@ -54,7 +58,7 @@
       </code></pre>
       <p>
         При нажатии на пункт меню он подсвечивается, в области контента появляется анимированная
-        картинка и делается ajax-запрос на сервер: <code>/core.php?mode=content</code> .
+        картинка и делается ajax-запрос на сервер: <code>/astronomy.json</code> .
       </p>
       <p>
         Когда получен ответ от сервера, то вместо картинки отображается контент, полученный от сервера.
@@ -78,19 +82,19 @@
           jQuery
         </li>
         <li>
-          <a href="/angular/index.html">Angular 1.0</a> (не сделано)
+          <a href="angular/index.html">Angular 1.0</a> (не сделано)
         </li>
         <li>
-          <a href="/backbone/index.html">Backbone</a>
+          <a href="backbone/index.html">Backbone</a>
         </li>
         <li>
-          <a href="/react/index.html">React</a>
+          <a href="react/index.html">React</a>
         </li>
         <li>
           Backbone & Marionett
         </li>
         <li>
-          <a href="/react-flux/index.html">React & Flux</a> (не сделано)
+          <a href="react-flux/index.html">React & Flux</a> (не сделано)
         </li>
         <li>
           Angular 2.0
