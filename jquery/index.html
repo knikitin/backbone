@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Тестирование JS-фреймворков</title>
+
+    <!-- Bootstrap -->
+    <link href="../_assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../_assets/bootstrap/js/bootstrap.min.js"></script>
+
+    <style type="text/css">
+        #content {display: none;}
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">jQuery</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="main-menu">
+            <ul class="nav navbar-nav">
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="well" id="loader">
+            <div class="text-center"><img src="../loader.gif" /></div>
+        </div>
+
+        <div class="well" id="content">
+            <h1></h1>
+            <div id="text"></div>
+        </div>
+
+        <h2>Ссылки</h2>
+        <ul>
+            <li><a href="http://habrahabr.ru/post/249107/">ReactJS для глупых людей</a></li>
+            <li><a href="http://habrahabr.ru/company/hexlet/blog/249579/">Нетрадиционный обзор React</a></li>
+            <li><a href="http://jspro.ru/post/pervoe-znakomstvo-s-reactjs-ot-facebook">Первое знакомство с React.js от Facebook</a></li>
+            <li><a href="http://habrahabr.ru/post/229629/">5 практических примеров для изучения фреймворка React</a></li>
+            <li><a href="http://facebook.github.io/react/docs/tutorial.html">Official Tutorial</a></li>
+            <li><a href="https://github.com/reactjs/react-tutorial/blob/master/public/scripts/example.js">Source code for official Tutorial</a></li>
+            <li><a href="http://facebook.github.io/react/tips/communicate-between-components.html">Communicate Between Components</a></li>
+            <li><a href="https://gist.github.com/Yitsushi/e3b7823f7d4bf34faa4f">EventSystem that I use with React.js to communicate between components</a></li>
+            <li><a href="http://facebook.github.io/react/tips/initial-ajax.html">Load Initial Data via AJAX</a></li>
+            <li><a href="http://habrahabr.ru/post/222573/">ReactJS in a nutshell. Часть 1</a></li>
+        </ul>
+
+        <div class="text-center">
+            <a class="btn btn-info btn-lg" href="/">К началу</a>
+        </div>
+
+    </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../_assets/jquery-2.2.3.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../_assets/bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Получаем данные главного меню
+        $.getJSON("../menu.json", function(data) {
+            var activeUrl = 'astronomy';
+            $.each(data, function(key, value) {
+                if (value.url === '/') {
+                    var link = 'href="/"';
+                } else {
+                    var link = 'href="#!' + value.url + '"';
+                    link += ' onClick="loadData(this)"'
+                    link += ' id="menu-link-' + value.url + '"';
+                }
+                var active = value.url == activeUrl ? ' class="active"' : '';
+                var li = $("<li" + active + "><a " + link + ">" + value.name + "</a></li>");
+                li.appendTo("#main-menu ul");
+            });
+            getFile(data[1].url);
+        });
+
+    });
+
+    function loadData(obj) {
+        // Отображаем гифку ожидания загрузки
+        $('#loader').css("display", "block");
+        $('#content').css("display", "none");
+        // Очищаем установленный класс выбранного пункта меню
+        $("#main-menu ul li").removeClass("active");
+        // Устанавливаем класс активности на выбранный элемент
+        $('#' + obj.id).parent().toggleClass("active");
+        // Считываем данные из json-файла
+        var url = obj.id.slice(10);
+        getFile(url);
+    }
+
+    function getFile(url) {
+        var file = '../' + url + '.json';
+        $.getJSON(file, function(data) {
+            $('#loader').css("display", "none");
+            $('#content').css("display", "block");
+            $('#content > h1').html(data.header);
+            $('#text').html(data.content);
+        });
+    }
+</script>
+
+</body>
+</html>
