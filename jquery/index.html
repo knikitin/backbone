@@ -120,6 +120,12 @@
             $('#content > h1').html(data.header);
             // Прописываем контент
             $('#text').html(data.content);
+        }).fail(function() {
+            // Прописываем заголовок
+            $('#content > h1').html('Произошла ошибка');
+            // Прописываем контент
+            $('#text').html('');
+        }).always(function() {
             // Выключаем гифку
             $('#loader').css("display", "none");
             // Включаем блок контента
