@@ -74,7 +74,8 @@
         // Получаем данные главного меню
         $.getJSON("../menu.json", function(data) {
             // Назаначаем активный пункт меню
-            var activeUrl = 'astronomy';
+            var activeUrl = window.location.hash.split('#!')[1];
+            activeUrl = activeUrl === undefined ? data[1].url : activeUrl;
             $.each(data, function(key, value) {
                 if (value.url === '/') {
                     // Для главной страницы ставим простую ссылку
