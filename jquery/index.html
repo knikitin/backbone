@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Тестирование JS-фреймворков</title>
+    <title>jQuery — Тестирование JS-фреймворков</title>
 
     <!-- Bootstrap -->
     <link href="../_assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -57,20 +57,6 @@
             <div id="text"></div>
         </div>
 
-        <h2>Ссылки</h2>
-        <ul>
-            <li><a href="http://habrahabr.ru/post/249107/">ReactJS для глупых людей</a></li>
-            <li><a href="http://habrahabr.ru/company/hexlet/blog/249579/">Нетрадиционный обзор React</a></li>
-            <li><a href="http://jspro.ru/post/pervoe-znakomstvo-s-reactjs-ot-facebook">Первое знакомство с React.js от Facebook</a></li>
-            <li><a href="http://habrahabr.ru/post/229629/">5 практических примеров для изучения фреймворка React</a></li>
-            <li><a href="http://facebook.github.io/react/docs/tutorial.html">Official Tutorial</a></li>
-            <li><a href="https://github.com/reactjs/react-tutorial/blob/master/public/scripts/example.js">Source code for official Tutorial</a></li>
-            <li><a href="http://facebook.github.io/react/tips/communicate-between-components.html">Communicate Between Components</a></li>
-            <li><a href="https://gist.github.com/Yitsushi/e3b7823f7d4bf34faa4f">EventSystem that I use with React.js to communicate between components</a></li>
-            <li><a href="http://facebook.github.io/react/tips/initial-ajax.html">Load Initial Data via AJAX</a></li>
-            <li><a href="http://habrahabr.ru/post/222573/">ReactJS in a nutshell. Часть 1</a></li>
-        </ul>
-
         <div class="text-center">
             <a class="btn btn-info btn-lg" href="/">К началу</a>
         </div>
@@ -87,24 +73,32 @@
     $(document).ready(function() {
         // Получаем данные главного меню
         $.getJSON("../menu.json", function(data) {
+            // Назаначаем активный пункт меню
             var activeUrl = 'astronomy';
             $.each(data, function(key, value) {
                 if (value.url === '/') {
+                    // Для главной страницы ставим простую ссылку
                     var link = 'href="/"';
                 } else {
+                    // Для ajax-страниц прописываем соответствующие данные
                     var link = 'href="#!' + value.url + '"';
                     link += ' onClick="loadData(this)"'
                     link += ' id="menu-link-' + value.url + '"';
                 }
+                // Подсвечиваем активный элемент
                 var active = value.url == activeUrl ? ' class="active"' : '';
+                // Собираем пункт меню
                 var li = $("<li" + active + "><a " + link + ">" + value.name + "</a></li>");
+                // Добваляем пункт меню
                 li.appendTo("#main-menu ul");
             });
-            getFile(data[1].url);
+            // Считываение данных для активного пункта меню
+            getFile(activeUrl);
         });
 
     });
 
+    // Загрузка данных из файла по клику на пункте меню
     function loadData(obj) {
         // Отображаем гифку ожидания загрузки
         $('#loader').css("display", "block");
@@ -118,13 +112,18 @@
         getFile(url);
     }
 
+    // Загрузка данных из файла url
     function getFile(url) {
         var file = '../' + url + '.json';
         $.getJSON(file, function(data) {
-            $('#loader').css("display", "none");
-            $('#content').css("display", "block");
+            // Прописываем заголовок
             $('#content > h1').html(data.header);
+            // Прописываем контент
             $('#text').html(data.content);
+            // Выключаем гифку
+            $('#loader').css("display", "none");
+            // Включаем блок контента
+            $('#content').css("display", "block");
         });
     }
 </script>

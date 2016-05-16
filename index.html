@@ -50,12 +50,21 @@
         После чего происходит отображение полученного меню в формате Twitter Bootstrap:
       </p>
       <pre><code>
-&lt;ul class="nav navbar-nav">
-  &lt;li>&lt;a href="#astronomy">Астрономия&lt;/a>&lt;/li>
-  &lt;li>&lt;a href="#geology">Геология&lt;/a>&lt;/li>
-  &lt;li>&lt;a href="#literatura">Литературоведение&lt;/a>&lt;/li>
-&lt;/ul>
+&lt;div class="collapse navbar-collapse">
+  &lt;ul class="nav navbar-nav">
+    &lt;li>&lt;a href="#!astronomy">Астрономия&lt;/a>&lt;/li>
+    &lt;li>&lt;a href="#!geology">Геология&lt;/a>&lt;/li>
+    &lt;li>&lt;a href="#!literatura">Литературоведение&lt;/a>&lt;/li>
+  &lt;/ul>
+&lt;/div>
       </code></pre>
+      <blockquote>Примечание: ссылки могут формироваться и другим способом, главное, 
+      чтобы был доступ к конкретному пункту меню через URL.</blockquote>
+      <p>
+        Если ссылка не содержит указания открываемой страницы меню, то при открытии страницы
+        открывается первый пункт из меню, после главной страницы. То есть считываются 
+        данные этого пункта и он подсвечивается активным.
+      </p>
       <p>
         При нажатии на пункт меню он подсвечивается, в области контента появляется анимированная
         картинка и делается ajax-запрос на сервер: <code>/astronomy.json</code> .
@@ -82,7 +91,7 @@
           <a href="jquery/index.html">jQuery</a>
         </li>
         <li>
-          <a href="angular/index.html">Angular 1.0</a> (не сделано)
+          <a href="angular/index.html">Angular 1.0</a>
         </li>
         <li>
           <a href="backbone/index.html">Backbone</a>
@@ -104,7 +113,7 @@
   </div>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="_assets/jquery-2.2.3.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="_assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
