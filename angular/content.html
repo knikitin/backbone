@@ -1,0 +1,18 @@
+<div class="container">
+
+  <div class="row" ng-show="showContent">
+    <div class="well" id="content">
+
+      <h1> {{fullContent.header}} </h1>
+      <div id="text" ng-bind-html="sce.trustAsHtml(fullContent.content)"></div>
+
+    </div> 
+  </div>
+
+  <div class="well" ng-hide="showContent">
+    <div class="text-center"><img src="../loader.gif" /></div>
+  </div>
+
+</div>
+</div>
+
