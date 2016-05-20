@@ -26,11 +26,11 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
+<div class="container">
+    <nav class="navbar navbar-default">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -40,39 +40,32 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="main-menu">
+        <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav" id="main-menu">
                 <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
                 <li><a href="#">Link</a></li>
             </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i>
+                        <strong>User Name</strong><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/">Выход</a></li>
+                    </ul>
+                </li>
+            </ul>
+
         </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+    </nav>
+</div><!-- /.container -->
 
 <div class="container">
-    <div class="row">
-        <div class="well" id="content">
+    <div class="well" id="content">
+    </div>
 
-        </div>
-
-        <h2>Ссылки</h2>
-        <ul>
-            <li><a href="http://habrahabr.ru/post/249107/">ReactJS для глупых людей</a></li>
-            <li><a href="http://habrahabr.ru/company/hexlet/blog/249579/">Нетрадиционный обзор React</a></li>
-            <li><a href="http://jspro.ru/post/pervoe-znakomstvo-s-reactjs-ot-facebook">Первое знакомство с React.js от Facebook</a></li>
-            <li><a href="http://habrahabr.ru/post/229629/">5 практических примеров для изучения фреймворка React</a></li>
-            <li><a href="http://facebook.github.io/react/docs/tutorial.html">Official Tutorial</a></li>
-            <li><a href="https://github.com/reactjs/react-tutorial/blob/master/public/scripts/example.js">Source code for official Tutorial</a></li>
-            <li><a href="http://facebook.github.io/react/tips/communicate-between-components.html">Communicate Between Components</a></li>
-            <li><a href="https://gist.github.com/Yitsushi/e3b7823f7d4bf34faa4f">EventSystem that I use with React.js to communicate between components</a></li>
-            <li><a href="http://facebook.github.io/react/tips/initial-ajax.html">Load Initial Data via AJAX</a></li>
-            <li><a href="http://habrahabr.ru/post/222573/">ReactJS in a nutshell. Часть 1</a></li>
-        </ul>
-
-        <div class="text-center">
-            <a class="btn btn-info btn-lg" href="/">К началу</a>
-        </div>
-
+    <div class="text-center">
+        <a class="btn btn-info btn-lg" href="/">К началу</a>
     </div>
 </div>
 
