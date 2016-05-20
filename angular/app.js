@@ -11,13 +11,17 @@ app.run(
       ]
     );
 
-app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
+app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 		function($stateProvider, $urlRouterProvider, $locationProvider) {
+
+  $urlRouterProvider.otherwise('/');
 
   $locationProvider.hashPrefix("!");
 
   $stateProvider
-    .state('mainState', {
+ 	.state("home", { url: "", template: ''})    // начальное состояние. попали в него, значит перешли без цели
+
+    .state("mainState", {
           url: "/{url}",
           templateUrl: "content.html",
           controller: ['$scope', '$http', '$sce', '$stateParams', function($scope, $http, $sce, $stateParams){
@@ -27,7 +31,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
 			$scope.fullContent = {};
 			$scope.sce = $sce;
 			$scope.showContent = true;
-
+      		
 		    if ($stateParams.url === "/") {
 		      $scope.fullContent = {};
 		      document.location.href='/';
@@ -47,6 +51,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
 
           }]
     })
+
 }]);
 
  
@@ -57,7 +62,10 @@ app.controller('mainMenu', [ '$http', '$state', function($http, $state) {
   mainMenu.listMenu = [];
   $http.get("/menu.json").success(function(data){
       mainMenu.listMenu = data;
-      $state.go('mainState', {"url":mainMenu.listMenu[1].url});
+      if ($state.$current.name == "home") {
+	      $state.go('mainState', {"url":mainMenu.listMenu[1].url});
+      }
+
     });
 
 }]);
